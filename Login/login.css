@@ -1,0 +1,67 @@
+.navigation {
+  align-items: flex-start;
+  display: grid;
+  gap: 5px;
+}
+body {
+  background-color:blanchedalmond;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+h1 {
+  -webkit-text-stroke: 1px #f3a8c2;
+  font-family: sans; color: azure;
+  font-size: 70px;
+  margin-top: 0px;
+}
+.login {
+  align-items: center;
+  justify-content: center;
+  display:  grid;
+  padding: 30px;
+}
+.loginform {
+  border: 1px solid #fdcae1;
+  display:  flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 15px;
+  padding: 4rem;
+  background-color: #ffe4e1;
+  border-radius: 5px;
+}
+.formInput{
+  width: 100%;
+  height: 30px;
+  border-radius: 5px;
+  border: 2px solid #fdcae1;
+  text-indent: 10px;
+
+}
+.formInput:focus{
+  outline: #f3a8c2;
+}
+.submitInput{
+  width: 100%;
+  height: 40px;
+  margin-top: 20px;
+  align-self: center;
+  border-radius: 5px;
+  border: 2px solid #f3a8c2;
+  background-color: #f3a8c2;
+  font-family: sans; color: azure;
+  font-size: 20px;
+
+}
+nav a{
+  font-family: sans; color: #f3a8c2;
+}
+nav {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
