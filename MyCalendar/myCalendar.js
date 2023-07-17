@@ -4,6 +4,27 @@ let events = localStorage.getItem("events") ? JSON.parse(localStorage.getItem("e
 
 const calendar = document.getElementById("calendar");
 const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+const newEventModal = document.getElementById('newEventModal');
+const deleteEventModal = document.getElementById('deleteEventModal');
+const backDrop = document.getElementById('modalBackDrop');
+const eventTitleInput = document.getElementById('eventTitleInput')
+const eventType = document.querySelector('input[name="eventType"]').value;
+
+
+function openModal(date) {
+  clicked = date;
+
+  const eventForDay = events.find(e => e.date === clicked);
+
+  if (eventForDay) {
+    document.getElementById('eventText').innerText = eventForDay.title;
+    deleteEventModal.style.display = 'block';
+  } else {
+    newEventModal.style.display = 'block';
+  }
+
+  backDrop.style.display = 'block';
+}
 
 function loadCalendar() {
   calendar.innerHTML = "";
@@ -26,7 +47,6 @@ function loadCalendar() {
     day: "numeric"
   })
   const paddingDays = weekdays.indexOf(dateString.split(", ")[0])
-  console.log("🚀 ~ file: myCalendar.js:29 ~ loadCalendar ~ paddingDays:", paddingDays)
   document.getElementById("currentMonth").innerText = `${date.toLocaleDateString("en-GB", {
     month: "long",
   })} ${year}`
@@ -36,7 +56,7 @@ function loadCalendar() {
 
     if (i > paddingDays) {
       daySquare.innerText = i - paddingDays;
-      daySquare.addEventListener("click", () => console.log("click"))
+      daySquare.addEventListener("click", () => openModal(`${i - paddingDays}/${month + 1}/${year}`))
 
     }
     else {
@@ -47,7 +67,38 @@ function loadCalendar() {
     calendar.appendChild(daySquare)
   }
 }
-function initMonthButtons() {
+
+function closeModal() {
+  eventTitleInput.classList.remove('error');
+  newEventModal.style.display = 'none';
+  deleteEventModal.style.display = 'none';
+  backDrop.style.display = 'none';
+  eventTitleInput.value = '';
+  clicked = null;
+  loadCalendar();
+}
+function saveEvent() {
+  if (eventTitleInput.value) {
+    eventTitleInput.classList.remove('error');
+    events.push({
+      date: clicked,
+      title: eventTitleInput.value,
+      type: eventType
+    });
+    localStorage.setItem('events', JSON.stringify(events));
+    closeModal();
+  } else {
+    eventTitleInput.classList.add('error');
+  }
+}
+
+function deleteEvent() {
+  events = events.filter(e => e.date !== clicked);
+  localStorage.setItem('events', JSON.stringify(events));
+  closeModal();
+}
+
+function initMonthNavigationButtons() {
   document.getElementById("nextButton").addEventListener("click", () => {
     navMonth++;
     loadCalendar();
@@ -57,5 +108,10 @@ function initMonthButtons() {
     loadCalendar();
   })
 }
-initMonthButtons()
+function initModalButtons() {
+  document.getElementById("saveButton").addEventListener("click", saveEvent)
+  document.getElementById("cancelButton").addEventListener("click", closeModal)
+}
+initMonthNavigationButtons()
+initModalButtons()
 loadCalendar()
